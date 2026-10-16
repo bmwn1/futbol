@@ -156,7 +156,7 @@ function stopSynthesizedCrowd() {
             crowdGainNode.gain.setValueAtTime(0, audioCtx.currentTime);
             crowdGainNode.gain.value = 0;
             crowdGainNode.disconnect();
-        } catch (e) {}
+        } catch (e) { }
         crowdGainNode = null;
     }
 
@@ -164,14 +164,14 @@ function stopSynthesizedCrowd() {
         try {
             crowdSourceNode.stop(0);
             crowdSourceNode.disconnect();
-        } catch (e) {}
+        } catch (e) { }
         crowdSourceNode = null;
     }
 
     if (audioCtx && audioCtx.state === 'running') {
         try {
             audioCtx.suspend();
-        } catch (e) {}
+        } catch (e) { }
     }
 }
 
@@ -208,7 +208,7 @@ function playWhistleSound() {
         osc1.stop(audioCtx.currentTime + 0.32);
         osc2.stop(audioCtx.currentTime + 0.32);
         vibrato.stop(audioCtx.currentTime + 0.32);
-    } catch(e) {}
+    } catch (e) { }
 }
 
 // Ball Kick Sound
@@ -228,7 +228,7 @@ function playKickSound() {
         gain.connect(audioCtx.destination);
         osc.start();
         osc.stop(audioCtx.currentTime + 0.15);
-    } catch(e) {}
+    } catch (e) { }
 }
 
 // Goal Roar Fanfare
@@ -248,7 +248,7 @@ function playGoalSound() {
             osc.start(audioCtx.currentTime + index * 0.08);
             osc.stop(audioCtx.currentTime + index * 0.08 + 0.5);
         });
-    } catch(e) {}
+    } catch (e) { }
 }
 
 /* ==========================================================================
@@ -936,8 +936,8 @@ function initMatchCenter() {
 
     function renderMatches() {
         grid.innerHTML = '';
-        const filtered = activeFilter === 'ALL' 
-            ? MATCH_DATABASE 
+        const filtered = activeFilter === 'ALL'
+            ? MATCH_DATABASE
             : MATCH_DATABASE.filter(m => m.league === activeFilter);
 
         filtered.forEach(m => {
@@ -1285,4 +1285,40 @@ function initAmbientCanvas() {
         requestAnimationFrame(animate);
     }
     animate();
+}
+
+
+/* Tungi va kunduzgi rejim */
+const themeBtn = document.getElementById("themeToggleBtn");
+const themeIcon = themeBtn?.querySelector("i");
+const themeText = themeBtn?.querySelector(".theme-text");
+
+function setTheme(isLight) {
+    document.body.classList.toggle("light-mode", isLight);
+
+    if (themeIcon) {
+        themeIcon.className = isLight
+            ? "fa-solid fa-sun"
+            : "fa-solid fa-moon";
+    }
+
+    if (themeText) {
+        themeText.textContent = isLight ? "Kunduzgi" : "Tungi";
+    }
+
+    localStorage.setItem("arena-theme", isLight ? "light" : "dark");
+}
+
+if (themeBtn) {
+    setTheme(localStorage.getItem("arena-theme") === "light");
+
+    themeBtn.addEventListener("click", () => {
+        setTheme(!document.body.classList.contains("light-mode"));
+    });
+
+    // Scroll qilganda tugmani ko‘rsatish
+    window.addEventListener("scroll", () => {
+        themeBtn.classList.toggle("show-on-scroll", window.scrollY > 150);
+    }, { passive: true });
+
 }

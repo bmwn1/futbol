@@ -8,7 +8,7 @@
     --bg-card: rgba(14, 22, 36, 0.75);
     --bg-card-hover: rgba(20, 32, 54, 0.85);
     --bg-glass: rgba(10, 16, 26, 0.65);
-    
+
     --neon-green: #00ff87;
     --neon-green-glow: rgba(0, 255, 135, 0.4);
     --cyber-cyan: #00f0ff;
@@ -34,7 +34,9 @@
 }
 
 /* Base Reset */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -52,7 +54,7 @@ body {
     font-family: var(--font-body);
     overflow-x: hidden;
     position: relative;
-    background-image: 
+    background-image:
         radial-gradient(circle at 15% 20%, rgba(0, 255, 135, 0.05) 0%, transparent 40%),
         radial-gradient(circle at 85% 60%, rgba(0, 240, 255, 0.05) 0%, transparent 45%),
         radial-gradient(circle at 50% 90%, rgba(255, 0, 85, 0.03) 0%, transparent 50%);
@@ -63,13 +65,16 @@ body {
 ::-webkit-scrollbar {
     width: 8px;
 }
+
 ::-webkit-scrollbar-track {
     background: var(--bg-darkest);
 }
+
 ::-webkit-scrollbar-thumb {
     background: #1b263b;
     border-radius: 4px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
     background: var(--neon-green);
     box-shadow: 0 0 10px var(--neon-green-glow);
@@ -102,7 +107,7 @@ body {
     width: 100%;
     height: 100%;
     background-size: 60px 60px;
-    background-image: 
+    background-image:
         linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
         linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
     pointer-events: none;
@@ -178,18 +183,37 @@ body {
 }
 
 @keyframes rotateRing {
-    100% { transform: rotate(360deg); }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes pulseBall {
-    0% { transform: scale(0.9); }
-    100% { transform: scale(1.15); filter: drop-shadow(0 0 15px var(--neon-green)); }
+    0% {
+        transform: scale(0.9);
+    }
+
+    100% {
+        transform: scale(1.15);
+        filter: drop-shadow(0 0 15px var(--neon-green));
+    }
 }
 
 @keyframes loadProgress {
-    0% { width: 5%; margin-left: 0; }
-    50% { width: 75%; margin-left: 15%; }
-    100% { width: 100%; margin-left: 0; }
+    0% {
+        width: 5%;
+        margin-left: 0;
+    }
+
+    50% {
+        width: 75%;
+        margin-left: 15%;
+    }
+
+    100% {
+        width: 100%;
+        margin-left: 0;
+    }
 }
 
 /* ==========================================================================
@@ -240,8 +264,13 @@ header {
 }
 
 @keyframes blink {
-    0% { opacity: 0.3; }
-    100% { opacity: 1; }
+    0% {
+        opacity: 0.3;
+    }
+
+    100% {
+        opacity: 1;
+    }
 }
 
 .ticker-track {
@@ -275,8 +304,13 @@ header {
 }
 
 @keyframes scrollTicker {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
 }
 
 /* Main Navbar */
@@ -379,16 +413,19 @@ header {
     transition: width 0.3s ease;
 }
 
-.nav-link:hover, .nav-link.active {
+.nav-link:hover,
+.nav-link.active {
     color: #fff;
 }
 
-.nav-link:hover i, .nav-link.active i {
+.nav-link:hover i,
+.nav-link.active i {
     color: var(--neon-green);
     opacity: 1;
 }
 
-.nav-link:hover::after, .nav-link.active::after {
+.nav-link:hover::after,
+.nav-link.active::after {
     width: 100%;
 }
 
@@ -470,13 +507,26 @@ header {
     background: var(--neon-green);
 }
 
-.audio-playing .audio-bar:nth-child(1) { animation: eqBar 0.8s ease infinite alternate; }
-.audio-playing .audio-bar:nth-child(2) { animation: eqBar 0.6s ease 0.2s infinite alternate; }
-.audio-playing .audio-bar:nth-child(3) { animation: eqBar 0.7s ease 0.4s infinite alternate; }
+.audio-playing .audio-bar:nth-child(1) {
+    animation: eqBar 0.8s ease infinite alternate;
+}
+
+.audio-playing .audio-bar:nth-child(2) {
+    animation: eqBar 0.6s ease 0.2s infinite alternate;
+}
+
+.audio-playing .audio-bar:nth-child(3) {
+    animation: eqBar 0.7s ease 0.4s infinite alternate;
+}
 
 @keyframes eqBar {
-    0% { height: 3px; }
-    100% { height: 14px; }
+    0% {
+        height: 3px;
+    }
+
+    100% {
+        height: 14px;
+    }
 }
 
 .btn-game-launch {
@@ -543,8 +593,13 @@ header {
 }
 
 @keyframes pulseSphere {
-    0% { transform: scale(1) translate(0, 0); }
-    100% { transform: scale(1.2) translate(-30px, 30px); }
+    0% {
+        transform: scale(1) translate(0, 0);
+    }
+
+    100% {
+        transform: scale(1.2) translate(-30px, 30px);
+    }
 }
 
 .hero-content {
@@ -765,7 +820,7 @@ header {
     width: 64px;
     height: 64px;
     object-fit: contain;
-    filter: drop-shadow(0 8px 16px rgba(0,0,0,0.4));
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
     transition: transform 0.3s ease;
 }
 
@@ -859,9 +914,17 @@ header {
     transition: width 0.5s ease;
 }
 
-.pred-home { background: #00ff87; }
-.pred-draw { background: #c5d1e0; }
-.pred-away { background: #00f0ff; }
+.pred-home {
+    background: #00ff87;
+}
+
+.pred-draw {
+    background: #c5d1e0;
+}
+
+.pred-away {
+    background: #00f0ff;
+}
 
 .predictor-buttons {
     display: flex;
@@ -882,7 +945,8 @@ header {
     transition: all 0.2s ease;
 }
 
-.btn-vote:hover, .btn-vote.voted {
+.btn-vote:hover,
+.btn-vote.voted {
     background: rgba(0, 255, 135, 0.2);
     border-color: var(--neon-green);
     color: #fff;
@@ -1183,7 +1247,8 @@ section {
     transition: all 0.25s ease;
 }
 
-.btn-formation:hover, .btn-formation.active {
+.btn-formation:hover,
+.btn-formation.active {
     background: rgba(0, 255, 135, 0.15);
     border-color: var(--neon-green);
     color: var(--neon-green);
@@ -1195,7 +1260,7 @@ section {
     position: relative;
     width: 100%;
     aspect-ratio: 16 / 11;
-    background: 
+    background:
         repeating-linear-gradient(0deg, #0c3319 0px, #0c3319 40px, #0e3b1d 40px, #0e3b1d 80px);
     border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 16px;
@@ -1294,8 +1359,13 @@ section {
 }
 
 @keyframes pulseSelected {
-    0% { transform: scale(1); }
-    100% { transform: scale(1.1); }
+    0% {
+        transform: scale(1);
+    }
+
+    100% {
+        transform: scale(1.1);
+    }
 }
 
 .player-disc {
@@ -1459,7 +1529,8 @@ section {
     transition: all 0.25s ease;
 }
 
-.pill-btn:hover, .pill-btn.active {
+.pill-btn:hover,
+.pill-btn.active {
     background: var(--neon-green);
     color: #000;
     border-color: var(--neon-green);
@@ -1660,12 +1731,10 @@ section {
     left: -50%;
     width: 200%;
     height: 200%;
-    background: linear-gradient(
-        45deg,
-        transparent 40%,
-        rgba(255, 255, 255, 0.12) 50%,
-        transparent 60%
-    );
+    background: linear-gradient(45deg,
+            transparent 40%,
+            rgba(255, 255, 255, 0.12) 50%,
+            transparent 60%);
     transform: rotate(25deg);
     pointer-events: none;
     transition: transform 0.6s ease;
@@ -1710,7 +1779,7 @@ section {
     object-fit: cover;
     border-radius: 12px;
     margin: 15px 0 10px;
-    filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5));
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.5));
 }
 
 .fut-name {
@@ -1843,7 +1912,8 @@ section {
     margin-bottom: 15px;
 }
 
-.club-from, .club-to {
+.club-from,
+.club-to {
     display: flex;
     align-items: center;
     gap: 8px;
@@ -1858,8 +1928,15 @@ section {
 }
 
 @keyframes slideArrow {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(5px); }
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    50% {
+        transform: translateX(5px);
+    }
 }
 
 .transfer-probability-wrap {
@@ -1983,9 +2060,17 @@ section {
     color: #fff;
 }
 
-.form-dot.w { background: #00ba60; }
-.form-dot.d { background: #556578; }
-.form-dot.l { background: #ff0055; }
+.form-dot.w {
+    background: #00ba60;
+}
+
+.form-dot.d {
+    background: #556578;
+}
+
+.form-dot.l {
+    background: #ff0055;
+}
 
 /* ==========================================================================
    FOOTBALL QUIZ / FAN TRIVIA
@@ -2126,7 +2211,7 @@ section {
     max-width: 650px;
     width: 100%;
     padding: 32px;
-    box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 40px rgba(0, 255, 135, 0.15);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 255, 135, 0.15);
     position: relative;
     transform: scale(0.9);
     transition: transform 0.3s var(--ease-out-back);
@@ -2261,6 +2346,7 @@ footer {
     .tactics-board-container {
         grid-template-columns: 1fr;
     }
+
     .footer-top {
         grid-template-columns: 1fr 1fr;
     }
@@ -2272,19 +2358,24 @@ footer {
         padding-top: 140px;
         text-align: center;
     }
+
     .hero-content {
         max-width: 100%;
     }
+
     .hero-buttons {
         justify-content: center;
     }
+
     .hero-stats-row {
         justify-content: center;
     }
+
     .hero-match-widget {
         max-width: 100%;
         width: 100%;
     }
+
     .nav-menu {
         display: none;
         flex-direction: column;
@@ -2297,16 +2388,231 @@ footer {
         padding: 25px;
         gap: 18px;
     }
+
     .nav-menu.active {
         display: flex;
     }
+
     .hamburger-btn {
         display: block;
     }
+
     .penalty-pitch-viewport {
         height: 340px;
     }
+
     .footer-top {
         grid-template-columns: 1fr;
     }
+}
+
+
+
+
+.theme-toggle-btn:hover {
+    transform: translateY(-3px);
+}
+
+/* Kunduzgi rejim */
+body.light-mode {
+    background-color: #f1f5f9;
+    background-image: none;
+    color: #172033;
+}
+
+body.light-mode .navbar {
+    background: rgba(255, 255, 255, 0.96);
+}
+
+body.light-mode .nav-link,
+body.light-mode .brand-text {
+    color: #172033;
+}
+
+body.light-mode .top-ticker {
+    background: #e2e8f0;
+}
+
+body.light-mode .ticker-item {
+    color: #334155;
+}
+
+body.light-mode .theme-toggle-btn {
+    background: #ffffff;
+    color: #172033;
+    border-color: #cbd5e1;
+}
+
+
+
+
+.theme-toggle-btn:hover {
+    transform: translateY(-3px);
+}
+
+
+/* Tugma ustiga sichqoncha borganda */
+.theme-toggle-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Faqat dumaloq ikonka ko‘rinsin */
+.theme-toggle-btn .theme-text {
+    display: none !important;
+}
+
+
+
+
+/* Scroll bo‘lganda ko‘rsatish */
+.theme-toggle-btn.show-on-scroll {
+    display: flex;
+}
+
+/* Sichqoncha bilan ustiga borganda */
+.theme-toggle-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Faqat ikonka ko‘rinsin */
+.theme-toggle-btn .theme-text {
+    display: none !important;
+}
+
+
+
+
+#themeToggleBtn.show-on-scroll {
+    display: flex !important;
+}
+
+#themeToggleBtn .theme-text {
+    display: none !important;
+}
+
+
+.theme-toggle-btn:hover {
+    transform: scale(1.1);
+    background: #292938;
+}
+
+body.light-mode .theme-toggle-btn {
+    background: #ffffff;
+    color: #222222;
+    border-color: #dddddd;
+}
+
+
+
+
+.theme-toggle-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 28px rgba(0, 255, 135, 0.4);
+}
+
+.theme-toggle-btn:active {
+    transform: scale(0.94);
+}
+
+body.light-mode .theme-toggle-btn {
+    background: #ffffff;
+    color: #222222;
+    border-color: #dddddd;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 600px) {
+    .theme-toggle-btn {
+        right: 14px;
+        bottom: 14px;
+        width: 48px;
+        height: 48px;
+        font-size: 19px;
+    }
+}
+
+
+#themeToggleBtn .theme-text {
+    display: none !important;
+}
+
+
+
+
+
+.theme-toggle-btn:hover {
+    transform: scale(1.1);
+    background: #292938;
+    box-shadow: 0 7px 24px rgba(0, 0, 0, 0.5);
+}
+
+body.light-mode .theme-toggle-btn {
+    background: #ffffff;
+    color: #171717;
+    border-color: #dddddd;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+
+
+/* ARENA PRIME — Tungi rejim tugmasi */
+#themeToggleBtn,
+.theme-toggle-btn {
+    position: fixed !important;
+    top: 600px !important;
+    left: auto !important;
+    right: 22px !important;
+    bottom: 20px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 52px !important;
+    height: 52px !important;
+    min-width: 52px !important;
+    padding: 0 !important;
+
+    border-radius: 50% !important;
+    background: #101820 !important;
+    color: #00ff87 !important;
+    border: 1px solid rgba(0, 255, 135, 0.55) !important;
+
+    font-size: 21px !important;
+    z-index: 999999 !important;
+    cursor: pointer;
+    box-shadow: 0 0 18px rgba(0, 255, 135, 0.2);
+}
+
+#themeToggleBtn .theme-text,
+.theme-toggle-btn .theme-text {
+    display: none !important;
+}
+
+#themeToggleBtn:hover,
+.theme-toggle-btn:hover {
+    transform: scale(1.1);
+}
+
+body.light-mode #themeToggleBtn,
+body.light-mode .theme-toggle-btn {
+    background: #ffffff !important;
+    color: #172033 !important;
+    border-color: #cbd5e1 !important;
+}
+
+
+.nav-right-container {
+    display: flex;
+    align-items: center; /* Elementlarni vertikal markaz bo'yicha tekislaydi */
+}
+
+.dark-mode-toggle {
+    margin-top: 5px; /* Tugma joyiga tushguncha pikselni o'zgartirib ko'ring */
+}
+
+
+.dark-mode-toggle {
+    display: inline-block;
+    vertical-align: middle;
 }
