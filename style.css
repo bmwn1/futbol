@@ -118,15 +118,7 @@ body {
    PAGE PRELOADER
    ========================================================================== */
 #preloader {
-    position: fixed;
-    inset: 0;
-    background: #05070a;
-    z-index: 99999;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    transition: opacity 0.6s ease, visibility 0.6s ease;
+    display: none !important;
 }
 
 .ball-radar {
@@ -2737,4 +2729,259 @@ body.light-mode .theme-toggle-btn {
 .dark-mode-toggle {
     display: inline-block;
     vertical-align: middle;
+}
+
+/* ==========================================================================
+   PURE HTML/CSS INTERACTIVITY ENHANCEMENTS (ZERO JAVASCRIPT)
+   ========================================================================== */
+
+/* Pure CSS Theme Toggle */
+.theme-toggle-btn .icon-light {
+    display: none;
+}
+
+body:has(#themeSwitch:checked) {
+    background-color: #f1f5f9;
+    background-image: none;
+    color: #172033;
+}
+
+body:has(#themeSwitch:checked) .navbar {
+    background: rgba(255, 255, 255, 0.96);
+}
+
+body:has(#themeSwitch:checked) .nav-link,
+body:has(#themeSwitch:checked) .brand-text {
+    color: #172033;
+}
+
+body:has(#themeSwitch:checked) .top-ticker {
+    background: #e2e8f0;
+}
+
+body:has(#themeSwitch:checked) .ticker-item {
+    color: #334155;
+}
+
+body:has(#themeSwitch:checked) .theme-toggle-btn {
+    background: #ffffff !important;
+    color: #172033 !important;
+    border-color: #cbd5e1 !important;
+}
+
+body:has(#themeSwitch:checked) .theme-toggle-btn .icon-dark {
+    display: none !important;
+}
+
+body:has(#themeSwitch:checked) .theme-toggle-btn .icon-light {
+    display: inline-block !important;
+    color: #f59e0b;
+}
+
+body:has(#themeSwitch:checked) .fut-card {
+    background: #ffffff;
+    color: #1e293b;
+    border-color: #cbd5e1;
+}
+
+body:has(#themeSwitch:checked) .match-card-futuristic {
+    background: #ffffff;
+    border-color: #e2e8f0;
+    color: #1e293b;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+body:has(#themeSwitch:checked) .team-name {
+    color: #0f172a;
+}
+
+body:has(#themeSwitch:checked) .score-display {
+    color: #008744;
+}
+
+/* Pure CSS Mobile Navigation Toggle */
+@media (max-width: 868px) {
+    body:has(#navToggle:checked) .nav-menu {
+        display: flex !important;
+    }
+}
+
+/* Pure CSS Match Predictor Vote */
+.vote-label {
+    cursor: pointer;
+}
+
+.vote-label input:checked + .btn-vote {
+    border-color: var(--neon-green);
+    background: rgba(0, 255, 135, 0.22);
+    color: #fff;
+    box-shadow: 0 0 16px rgba(0, 255, 135, 0.35);
+}
+
+/* Pure CSS Penalty Stadium Scene */
+.stadium-goal-frame {
+    position: absolute;
+    top: 45px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    max-width: 520px;
+    height: 195px;
+    border: 6px solid #fff;
+    border-bottom: none;
+    border-radius: 6px 6px 0 0;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.4), inset 0 0 40px rgba(0, 0, 0, 0.7);
+    background: repeating-linear-gradient(0deg, rgba(255,255,255,0.06), rgba(255,255,255,0.06) 12px, transparent 12px, transparent 24px),
+                repeating-linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.06) 12px, transparent 12px, transparent 24px);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.goalkeeper-silhouette {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--gold);
+    animation: gkReady 2s infinite ease-in-out;
+    margin-bottom: 5px;
+}
+
+.goalkeeper-silhouette .gk-icon {
+    font-size: 3.5rem;
+    filter: drop-shadow(0 0 12px rgba(255, 190, 11, 0.7));
+}
+
+.goalkeeper-silhouette .gk-name {
+    font-size: 0.75rem;
+    font-weight: 800;
+    font-family: var(--font-display);
+    background: rgba(0, 0, 0, 0.75);
+    padding: 2px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 190, 11, 0.3);
+    margin-top: 4px;
+}
+
+@keyframes gkReady {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-8px) scale(1.04); }
+}
+
+.penalty-targets-layer {
+    position: absolute;
+    top: 55px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 56%;
+    max-width: 490px;
+    height: 170px;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: auto;
+}
+
+.penalty-target {
+    width: 60px;
+    height: 60px;
+    border: 2px dashed rgba(0, 255, 135, 0.6);
+    border-radius: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--neon-green);
+    cursor: pointer;
+    font-size: 0.7rem;
+    font-weight: 700;
+    font-family: var(--font-display);
+    transition: all 0.3s ease;
+    background: rgba(0, 255, 135, 0.08);
+}
+
+.penalty-target:hover {
+    transform: scale(1.25);
+    background: rgba(0, 255, 135, 0.25);
+    border-color: #fff;
+    box-shadow: 0 0 20px rgba(0, 255, 135, 0.8);
+    color: #fff;
+}
+
+.penalty-target.top-center {
+    align-self: flex-start;
+    border-color: rgba(255, 190, 11, 0.6);
+    color: var(--gold);
+}
+
+.penalty-target.top-center:hover {
+    box-shadow: 0 0 20px rgba(255, 190, 11, 0.8);
+}
+
+.penalty-ball-spot {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.penalty-ball-graphic {
+    font-size: 2.8rem;
+    color: #fff;
+    filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.8)) drop-shadow(0 0 10px rgba(0, 255, 135, 0.5));
+    animation: ballBounce 2.5s infinite ease-in-out;
+}
+
+@keyframes ballBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+.penalty-spot-dot {
+    width: 14px;
+    height: 14px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #fff;
+    margin-top: -6px;
+}
+
+.goal-badge-static {
+    transform: translate(-50%, -50%) scale(1) !important;
+    opacity: 0.9 !important;
+    top: 24% !important;
+    font-size: 2.4rem !important;
+    letter-spacing: 4px;
+    animation: goalGlow 1.5s infinite alternate;
+}
+
+@keyframes goalGlow {
+    0% { transform: translate(-50%, -50%) scale(1); text-shadow: 0 0 15px var(--neon-green); }
+    100% { transform: translate(-50%, -50%) scale(1.08); text-shadow: 0 0 35px var(--neon-green), 0 0 60px #fff; }
+}
+
+.power-fill-animated {
+    animation: powerPulse 2s infinite ease-in-out alternate;
+}
+
+@keyframes powerPulse {
+    0% { width: 18%; background: var(--cyber-cyan); }
+    50% { width: 75%; background: var(--neon-green); }
+    100% { width: 95%; background: var(--live-red); }
+}
+
+/* Pure CSS Quiz Options selection */
+.btn-quiz-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.btn-quiz-option:has(input:checked) {
+    background: rgba(0, 255, 135, 0.2);
+    border-color: var(--neon-green);
+    color: var(--neon-green);
 }

@@ -20,21 +20,12 @@
 
 <body>
 
-    <!-- AMBIENT CANVAS & GRID BACKGROUND -->
-    <canvas id="ambient-canvas"></canvas>
+    <!-- STADIUM GRID BACKGROUND -->
     <div class="stadium-grid-overlay"></div>
 
-    <!-- PRELOADER -->
-    <div id="preloader">
-        <div class="ball-radar">
-            <div class="radar-ring"></div>
-            <i class="fa-solid fa-futbol radar-core"></i>
-        </div>
-        <div class="loader-title">ARENA <span>PRIME</span> // FUTBOL 360</div>
-        <div class="loader-bar-wrap">
-            <div class="loader-bar"></div>
-        </div>
-    </div>
+    <!-- PURE CSS THEME SWITCH & NAV SWITCH -->
+    <input type="checkbox" id="themeSwitch" class="theme-checkbox" style="position:fixed; opacity:0; pointer-events:none;">
+    <input type="checkbox" id="navToggle" class="nav-checkbox" style="position:fixed; opacity:0; pointer-events:none;">
 
     <!-- HEADER & NAVIGATION -->
     <header>
@@ -83,36 +74,20 @@
             </ul>
 
             <div class="nav-actions">
-                <!-- Theme Toggle Button (Dark / Light Mode) -->
-                <button class="theme-toggle-btn" id="themeToggleBtn" title="Kunduzgi / Tungi rejimni almashtirish">
-                    <i class="fa-solid fa-moon"></i>
-                </button>
-
-                <!-- Audio Atmosphere Button & Volume Controller -->
-                <div class="audio-widget-wrapper" id="audioWidgetWrapper">
-                    <button class="audio-toggle-btn" id="audioToggleBtn" title="Stadion tovushi va atmosferasi">
-                        <div class="audio-bars">
-                            <div class="audio-bar"></div>
-                            <div class="audio-bar"></div>
-                            <div class="audio-bar"></div>
-                        </div>
-                        <span id="audioBtnText">Stadion: OFF</span>
-                    </button>
-                    <div class="audio-volume-control" id="audioVolumeControl" title="Maydon ovozi balandligini sozlash">
-                        <i class="fa-solid fa-volume-high" id="volumeIcon"></i>
-                        <input type="range" class="audio-volume-slider" id="audioVolumeSlider" min="0" max="100" value="85" aria-label="Maydon ovozi balandligi">
-                        <span class="volume-value" id="volumeValue">85%</span>
-                    </div>
-                </div>
+                <!-- Theme Toggle (Pure CSS) -->
+                <label for="themeSwitch" class="theme-toggle-btn" title="Kunduzgi / Tungi rejim">
+                    <i class="fa-solid fa-moon icon-dark"></i>
+                    <i class="fa-solid fa-sun icon-light"></i>
+                </label>
 
                 <!-- Mini-Game Quick Launch -->
                 <a href="#penalty-game" class="btn-game-launch">
                     <i class="fa-solid fa-futbol"></i> Penalti Otish
                 </a>
 
-                <button class="hamburger-btn" id="hamburgerBtn">
+                <label for="navToggle" class="hamburger-btn" id="hamburgerBtn" title="Menyuni ochish">
                     <i class="fa-solid fa-bars-staggered"></i>
-                </button>
+                </label>
             </div>
         </nav>
     </header>
@@ -216,15 +191,15 @@
                     <div class="pred-segment pred-away" style="width: 30%;"></div>
                 </div>
                 <div class="predictor-buttons">
-                    <button class="btn-vote" onclick="this.classList.toggle('voted')">Real G'alabasi</button>
-                    <button class="btn-vote" onclick="this.classList.toggle('voted')">Durang</button>
-                    <button class="btn-vote" onclick="this.classList.toggle('voted')">City G'alabasi</button>
+                    <label class="vote-label"><input type="radio" name="matchVote" checked style="display:none;"><span class="btn-vote">Real G'alabasi (52%)</span></label>
+                    <label class="vote-label"><input type="radio" name="matchVote" style="display:none;"><span class="btn-vote">Durang (18%)</span></label>
+                    <label class="vote-label"><input type="radio" name="matchVote" style="display:none;"><span class="btn-vote">City G'alabasi (30%)</span></label>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- SECTION 1: INTERACTIVE PENALTY SHOOTOUT GAME -->
+    <!-- SECTION 1: INTERACTIVE PENALTY SHOOTOUT GAME (PURE HTML/CSS) -->
     <section id="penalty-game">
         <div class="section-head">
             <span class="section-tag"><i class="fa-solid fa-gamepad"></i> MINI-O'YIN</span>
@@ -238,49 +213,80 @@
                 <div class="penalty-scoreboard">
                     <div class="penalty-stat">
                         <div class="label">GOLLAR</div>
-                        <div class="value glow-green" id="statGoals">0</div>
+                        <div class="value glow-green" id="statGoals">14</div>
                     </div>
                     <div class="penalty-stat">
                         <div class="label">SEYVLAR / XATO</div>
-                        <div class="value glow-red" id="statSaves">0</div>
+                        <div class="value glow-red" id="statSaves">2</div>
                     </div>
                     <div class="penalty-stat">
                         <div class="label">G'ALABALI SERIYA</div>
-                        <div class="value" id="statStreak">0</div>
+                        <div class="value" id="statStreak">6</div>
                     </div>
                 </div>
 
                 <div style="font-family: var(--font-display); font-size: 0.8rem; color: var(--text-silver);">
-                    <i class="fa-solid fa-mouse-pointer" style="color: var(--neon-green);"></i> Darvoza burchagiga
-                    bosing yoki <strong>TEPISH</strong> tugmasini ishlating!
+                    <i class="fa-solid fa-crosshairs" style="color: var(--neon-green);"></i> Darvoza burchaklariga bosing yoki <strong>ZARBA BERISH</strong> tugmasini tanlang!
                 </div>
             </div>
 
-            <!-- Pitch Viewport & Canvas -->
+            <!-- Pitch Viewport & Goal Scene (Pure CSS) -->
             <div class="penalty-pitch-viewport">
-                <canvas id="penaltyCanvas"></canvas>
-                <div class="penalty-overlay-message" id="penaltyOverlayMsg">GOOOOL!</div>
+                <div class="stadium-goal-frame">
+                    <div class="goal-crossbar"></div>
+                    <div class="goal-post-left"></div>
+                    <div class="goal-post-right"></div>
+                    <div class="goal-net-mesh"></div>
+                    <div class="goalkeeper-silhouette">
+                        <i class="fa-solid fa-user-ninja gk-icon"></i>
+                        <span class="gk-name">Courtois</span>
+                    </div>
+                </div>
+
+                <!-- Interactive Target Zones -->
+                <div class="penalty-targets-layer">
+                    <div class="penalty-target top-left" title="Chap yuqori 'To'qqizlik'">
+                        <i class="fa-solid fa-crosshairs"></i>
+                        <span>9-lik</span>
+                    </div>
+                    <div class="penalty-target top-center" title="Markaziy 'Panenka'">
+                        <i class="fa-solid fa-crosshairs"></i>
+                        <span>Panenka</span>
+                    </div>
+                    <div class="penalty-target top-right" title="O'ng yuqori 'To'qqizlik'">
+                        <i class="fa-solid fa-crosshairs"></i>
+                        <span>9-lik</span>
+                    </div>
+                </div>
+
+                <!-- Ball on Penalty Spot -->
+                <div class="penalty-ball-spot">
+                    <div class="penalty-spot-dot"></div>
+                    <i class="fa-solid fa-futbol penalty-ball-graphic"></i>
+                </div>
+
+                <div class="penalty-overlay-message goal-badge-static">GOOOOL! ⚽</div>
             </div>
 
             <!-- Controls & Power Meter -->
             <div class="penalty-controls">
                 <div class="power-meter-wrap">
                     <div class="power-meter-label">
-                        <span>ZARBA KUCHI (POWER METER)</span>
-                        <span id="powerVal">50%</span>
+                        <span>ZARBA KUCHI (POWER METER - PULSING)</span>
+                        <span id="powerVal">88% MAX</span>
                     </div>
                     <div class="power-track">
-                        <div class="power-fill" id="powerFill"></div>
+                        <div class="power-fill power-fill-animated" style="width: 88%;"></div>
                     </div>
                 </div>
 
                 <div class="penalty-action-buttons">
-                    <button class="btn-kick" id="btnKickBall">
-                        <i class="fa-solid fa-futbol"></i> TEPISH!
-                    </button>
-                    <button class="btn-reset-game" id="btnResetPenalty">
+                    <a href="#penalty-game" class="btn-kick">
+                        <i class="fa-solid fa-futbol"></i> KUCHLI ZARBA!
+                    </a>
+                    <a href="#penalty-game" class="btn-reset-game">
                         <i class="fa-solid fa-rotate-left"></i> Yangilash
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -318,8 +324,53 @@
                 <div class="pitch-line pitch-goal-top"></div>
                 <div class="pitch-line pitch-goal-bottom"></div>
 
-                <!-- Dynamic Player Markers -->
-                <div id="pitchNodesWrap"></div>
+                <!-- 11 Player Markers (Pure HTML/CSS) -->
+                <div id="pitchNodesWrap">
+                    <div class="player-node" style="left: 50%; top: 88%;">
+                        <div class="player-disc gk">1</div>
+                        <div class="player-node-name">Courtois</div>
+                    </div>
+                    <div class="player-node" style="left: 86%; top: 70%;">
+                        <div class="player-disc">2</div>
+                        <div class="player-node-name">Walker</div>
+                    </div>
+                    <div class="player-node" style="left: 63%; top: 72%;">
+                        <div class="player-disc">4</div>
+                        <div class="player-node-name">Van Dijk</div>
+                    </div>
+                    <div class="player-node" style="left: 37%; top: 72%;">
+                        <div class="player-disc">5</div>
+                        <div class="player-node-name">Saliba</div>
+                    </div>
+                    <div class="player-node" style="left: 14%; top: 70%;">
+                        <div class="player-disc">3</div>
+                        <div class="player-node-name">Theo</div>
+                    </div>
+                    <div class="player-node" style="left: 50%; top: 54%;">
+                        <div class="player-disc">16</div>
+                        <div class="player-node-name">Rodri</div>
+                    </div>
+                    <div class="player-node" style="left: 72%; top: 44%;">
+                        <div class="player-disc">17</div>
+                        <div class="player-node-name">De Bruyne</div>
+                    </div>
+                    <div class="player-node" style="left: 28%; top: 44%;">
+                        <div class="player-disc">5</div>
+                        <div class="player-node-name">Bellingham</div>
+                    </div>
+                    <div class="player-node" style="left: 84%; top: 24%;">
+                        <div class="player-disc">19</div>
+                        <div class="player-node-name">Lamine Yamal</div>
+                    </div>
+                    <div class="player-node selected" style="left: 50%; top: 18%;">
+                        <div class="player-disc">9</div>
+                        <div class="player-node-name">Haaland</div>
+                    </div>
+                    <div class="player-node" style="left: 16%; top: 24%;">
+                        <div class="player-disc">7</div>
+                        <div class="player-node-name">Mbappé</div>
+                    </div>
+                </div>
             </div>
 
             <!-- Player Holographic Dossier -->
@@ -407,7 +458,130 @@
         </div>
 
         <div class="matches-grid-enhanced" id="matchesGrid">
-            <!-- Injected dynamically via JS -->
+            <!-- Match 1: UCL -->
+            <div class="match-card-futuristic">
+                <div class="match-top-row">
+                    <span class="league-tag"><i class="fa-solid fa-trophy"></i> UEFA Chempionlar Ligasi</span>
+                    <span class="status-badge live">LIVE 78'</span>
+                </div>
+                <div class="match-score-row">
+                    <div class="team-block">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg" alt="Real Madrid" onerror="this.src='https://crests.football-data.org/65.svg'">
+                        <span class="team-name">Real Madrid</span>
+                    </div>
+                    <div class="score-center">
+                        <div class="score-display">3 : 2</div>
+                    </div>
+                    <div class="team-block away">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg" alt="Man City" onerror="this.src='https://crests.football-data.org/57.svg'">
+                        <span class="team-name">Man City</span>
+                    </div>
+                </div>
+                <div class="match-bottom-details">
+                    <span>xG: 2.14 - 1.82</span>
+                    <span class="btn-match-insights">⚽ Vinicius 14', Haaland 29', Mbappé 55', Foden 67', Bellingham 74'</span>
+                </div>
+            </div>
+
+            <!-- Match 2: EPL -->
+            <div class="match-card-futuristic">
+                <div class="match-top-row">
+                    <span class="league-tag"><i class="fa-solid fa-trophy"></i> Premier League</span>
+                    <span class="status-badge live">LIVE 61'</span>
+                </div>
+                <div class="match-score-row">
+                    <div class="team-block">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg" alt="Arsenal" onerror="this.src='https://crests.football-data.org/65.svg'">
+                        <span class="team-name">Arsenal</span>
+                    </div>
+                    <div class="score-center">
+                        <div class="score-display">2 : 1</div>
+                    </div>
+                    <div class="team-block away">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/0/0c/Liverpool_FC.svg" alt="Liverpool" onerror="this.src='https://crests.football-data.org/57.svg'">
+                        <span class="team-name">Liverpool</span>
+                    </div>
+                </div>
+                <div class="match-bottom-details">
+                    <span>xG: 1.65 - 1.20</span>
+                    <span class="btn-match-insights">⚽ Saka 22' (P), Salah 40', Rice 58'</span>
+                </div>
+            </div>
+
+            <!-- Match 3: La Liga -->
+            <div class="match-card-futuristic">
+                <div class="match-top-row">
+                    <span class="league-tag"><i class="fa-solid fa-trophy"></i> La Liga</span>
+                    <span class="status-badge live">LIVE 34'</span>
+                </div>
+                <div class="match-score-row">
+                    <div class="team-block">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg" alt="Barcelona" onerror="this.src='https://crests.football-data.org/65.svg'">
+                        <span class="team-name">Barcelona</span>
+                    </div>
+                    <div class="score-center">
+                        <div class="score-display">1 : 0</div>
+                    </div>
+                    <div class="team-block away">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/f/f4/Atletico_Madrid_2017_logo.svg" alt="Atletico Madrid" onerror="this.src='https://crests.football-data.org/57.svg'">
+                        <span class="team-name">Atletico Madrid</span>
+                    </div>
+                </div>
+                <div class="match-bottom-details">
+                    <span>xG: 1.15 - 0.28</span>
+                    <span class="btn-match-insights">⚽ Lamine Yamal 19' (Sehrli zarba)</span>
+                </div>
+            </div>
+
+            <!-- Match 4: Serie A -->
+            <div class="match-card-futuristic">
+                <div class="match-top-row">
+                    <span class="league-tag"><i class="fa-solid fa-trophy"></i> Serie A</span>
+                    <span class="status-badge finished">Tugadi (FT)</span>
+                </div>
+                <div class="match-score-row">
+                    <div class="team-block">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/0/05/FC_Internazionale_Milano_2021.svg" alt="Inter Milan" onerror="this.src='https://crests.football-data.org/65.svg'">
+                        <span class="team-name">Inter Milan</span>
+                    </div>
+                    <div class="score-center">
+                        <div class="score-display">2 : 2</div>
+                    </div>
+                    <div class="team-block away">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/b/bc/Juventus_FC_2017_icon_%28black%29.svg" alt="Juventus" onerror="this.src='https://crests.football-data.org/57.svg'">
+                        <span class="team-name">Juventus</span>
+                    </div>
+                </div>
+                <div class="match-bottom-details">
+                    <span>xG: 2.01 - 1.45</span>
+                    <span class="btn-match-insights">⚽ Lautaro 12', Vlahovic 35', Barella 52', Yildiz 88'</span>
+                </div>
+            </div>
+
+            <!-- Match 5: Superliga -->
+            <div class="match-card-futuristic">
+                <div class="match-top-row">
+                    <span class="league-tag"><i class="fa-solid fa-trophy"></i> O'zbekiston Superligasi</span>
+                    <span class="status-badge live">LIVE 82'</span>
+                </div>
+                <div class="match-score-row">
+                    <div class="team-block">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/5/52/Pakhtakor_Tashkent_logo.svg" alt="Paxtakor" onerror="this.src='https://crests.football-data.org/65.svg'">
+                        <span class="team-name">Paxtakor</span>
+                    </div>
+                    <div class="score-center">
+                        <div class="score-display">2 : 1</div>
+                    </div>
+                    <div class="team-block away">
+                        <img src="https://upload.wikimedia.org/wikipedia/en/f/f6/Navbahor_Namangan_logo.png" alt="Navbahor" onerror="this.src='https://crests.football-data.org/57.svg'">
+                        <span class="team-name">Navbahor</span>
+                    </div>
+                </div>
+                <div class="match-bottom-details">
+                    <span>xG: 1.75 - 1.10</span>
+                    <span class="btn-match-insights">⚽ Dragan Ceran 31', Tabatadze 64', Hamrobekov 78'</span>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -812,28 +986,33 @@
             <div id="quizCardInner">
                 <div class="quiz-progress-head">
                     <span id="quizQNum">Savol 1 / 5</span>
-                    <span>To'plangan Ball: <strong id="quizScoreVal" style="color: var(--neon-green);">0</strong></span>
+                    <span>To'plangan Ball: <strong id="quizScoreVal" style="color: var(--neon-green);">100</strong></span>
                 </div>
                 <div class="quiz-meter">
-                    <div class="quiz-meter-bar" id="quizMeterBar"></div>
+                    <div class="quiz-meter-bar" id="quizMeterBar" style="width: 100%;"></div>
                 </div>
-                <div class="quiz-question-text" id="quizQText">Yuklanmoqda...</div>
+                <div class="quiz-question-text" id="quizQText">2022-yilgi Qatardagi Jahon chempionati finalida qaysi ikki terma jamoa afsonaviy o'yin ko'rsatgan?</div>
                 <div class="quiz-options-list" id="quizOptionsWrap">
-                    <!-- Options inserted via JS -->
-                </div>
-            </div>
-
-            <div class="quiz-result-box" id="quizResultBox">
-                <i class="fa-solid fa-trophy quiz-result-trophy"></i>
-                <h3 style="font-family: var(--font-display); font-size: 1.8rem; margin-bottom: 8px;">TEST YAKUNLANDI!
-                </h3>
-                <p style="color: var(--text-silver); margin-bottom: 20px;">Siz haqiqiy futbol professori darajasidasiz!
-                </p>
-                <div class="quiz-score-num" id="finalScoreNum">100 / 100</div>
-                <div style="margin-top: 25px;">
-                    <button class="btn-primary-glow" id="btnRestartQuiz">
-                        <i class="fa-solid fa-rotate-right"></i> Qaytadan Sinash
-                    </button>
+                    <label class="btn-quiz-option">
+                        <input type="radio" name="quizQ1" style="display:none;">
+                        <span>Fransiya va Xorvatiya</span>
+                        <i class="fa-regular fa-circle"></i>
+                    </label>
+                    <label class="btn-quiz-option correct">
+                        <input type="radio" name="quizQ1" checked style="display:none;">
+                        <span>Argentina va Fransiya (To'g'ri)</span>
+                        <i class="fa-solid fa-circle-check"></i>
+                    </label>
+                    <label class="btn-quiz-option">
+                        <input type="radio" name="quizQ1" style="display:none;">
+                        <span>Braziliya va Germaniya</span>
+                        <i class="fa-regular fa-circle"></i>
+                    </label>
+                    <label class="btn-quiz-option">
+                        <input type="radio" name="quizQ1" style="display:none;">
+                        <span>Ispaniya va Angliya</span>
+                        <i class="fa-regular fa-circle"></i>
+                    </label>
                 </div>
             </div>
         </div>
@@ -981,8 +1160,6 @@
         </div>
     </div>
 
-    <!-- JavaScript Application Logic -->
-    <script src="app.js"></script>
 </body>
 
 </html>
