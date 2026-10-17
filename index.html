@@ -225,8 +225,16 @@
                     </div>
                 </div>
 
-                <div style="font-family: var(--font-display); font-size: 0.8rem; color: var(--text-silver);">
-                    <i class="fa-solid fa-crosshairs" style="color: var(--neon-green);"></i> Darvoza burchaklariga bosing yoki <strong>ZARBA BERISH</strong> tugmasini tanlang!
+                <div class="penalty-hud-actions">
+                    <label class="gk-toggle-label" title="Darvozabonni yoqish / o'chirish">
+                        <input type="checkbox" id="toggleKeeperCheckbox" checked class="gk-toggle-input" style="position: absolute; opacity: 0; pointer-events: none;">
+                        <span class="gk-toggle-btn">
+                            <i class="fa-solid fa-user-shield"></i> Darvozabon: <span class="gk-txt-on">BOR</span><span class="gk-txt-off">YO'Q (BO'SH DARVOZA)</span>
+                        </span>
+                    </label>
+                    <div style="font-family: var(--font-display); font-size: 0.8rem; color: var(--text-silver);">
+                        <i class="fa-solid fa-crosshairs" style="color: var(--neon-green);"></i> Darvoza burchaklariga bosing yoki <strong>ZARBA BERISH</strong> tugmasini tanlang!
+                    </div>
                 </div>
             </div>
 
@@ -237,9 +245,57 @@
                     <div class="goal-post-left"></div>
                     <div class="goal-post-right"></div>
                     <div class="goal-net-mesh"></div>
-                    <div class="goalkeeper-silhouette">
-                        <i class="fa-solid fa-user-ninja gk-icon"></i>
-                        <span class="gk-name">Courtois</span>
+                    <div class="goalkeeper-figure" id="goalkeeperFigure">
+                        <svg viewBox="0 0 160 220" width="130" height="180" class="gk-svg-graphic" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="gkJersey" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#00f0ff" />
+                                    <stop offset="100%" stop-color="#006699" />
+                                </linearGradient>
+                                <linearGradient id="gkGlove" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#00ff87" />
+                                    <stop offset="100%" stop-color="#00aa55" />
+                                </linearGradient>
+                                <radialGradient id="gkShadow" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stop-color="rgba(0,0,0,0.7)" />
+                                    <stop offset="100%" stop-color="transparent" />
+                                </radialGradient>
+                            </defs>
+
+                            <!-- Shadow on turf -->
+                            <ellipse cx="80" cy="208" rx="52" ry="10" fill="url(#gkShadow)" />
+
+                            <!-- Legs & Shorts -->
+                            <path d="M60 142 L48 192 L64 195 L72 150 Z" fill="#1e293b" />
+                            <path d="M100 142 L112 192 L96 195 L88 150 Z" fill="#1e293b" />
+                            <!-- Goalkeeper socks & boots -->
+                            <rect x="46" y="182" width="18" height="18" rx="4" fill="#00f0ff" />
+                            <rect x="96" y="182" width="18" height="18" rx="4" fill="#00f0ff" />
+                            <path d="M42 200 L66 200 L63 206 L39 206 Z" fill="#00ff87" />
+                            <path d="M94 200 L118 200 L121 206 L97 206 Z" fill="#00ff87" />
+
+                            <!-- Goalkeeper Body / Jersey -->
+                            <path d="M50 78 L110 78 L104 146 L56 146 Z" fill="url(#gkJersey)" />
+                            <text x="80" y="122" font-family="'Teko', sans-serif" font-size="28" font-weight="900" fill="#ffffff" text-anchor="middle">1</text>
+                            <text x="80" y="96" font-family="'Outfit', sans-serif" font-size="10" font-weight="800" fill="rgba(255,255,255,0.85)" text-anchor="middle" letter-spacing="1">COURTOIS</text>
+
+                            <!-- Head & Hair -->
+                            <circle cx="80" cy="54" r="16" fill="#f1c27d" />
+                            <path d="M65 50 Q80 34 95 50 Q92 40 80 38 Q68 40 65 50 Z" fill="#2d1d12" />
+
+                            <!-- Left Arm & Outstretched Glove -->
+                            <path d="M52 82 L26 98 L16 82" stroke="url(#gkJersey)" stroke-width="12" stroke-linecap="round" fill="none" />
+                            <ellipse cx="12" cy="76" rx="13" ry="15" fill="url(#gkGlove)" transform="rotate(-20 12 76)" />
+                            <circle cx="12" cy="76" r="5" fill="#ffffff" opacity="0.6" />
+
+                            <!-- Right Arm & Outstretched Glove -->
+                            <path d="M108 82 L134 98 L144 82" stroke="url(#gkJersey)" stroke-width="12" stroke-linecap="round" fill="none" />
+                            <ellipse cx="148" cy="76" rx="13" ry="15" fill="url(#gkGlove)" transform="rotate(20 148 76)" />
+                            <circle cx="148" cy="76" r="5" fill="#ffffff" opacity="0.6" />
+                        </svg>
+                        <div class="gk-status-badge">
+                            <span class="gk-live-dot"></span> Courtois #1
+                        </div>
                     </div>
                 </div>
 
