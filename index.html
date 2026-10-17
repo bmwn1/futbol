@@ -62,10 +62,7 @@
 
             <ul class="nav-menu" id="navMenu">
                 <li><a href="#hero" class="nav-link active"><i class="fa-solid fa-house"></i> Asosiy</a></li>
-                <li><a href="#penalty-game" class="nav-link"><i class="fa-solid fa-crosshairs"></i> Penalti O'yini</a>
-                </li>
-                <li><a href="#tactics" class="nav-link"><i class="fa-solid fa-clipboard-list"></i> Taktika Doskasi</a>
-                </li>
+                <li><a href="#tactics" class="nav-link"><i class="fa-solid fa-clipboard-list"></i> Taktika Doskasi</a></li>
                 <li><a href="#matches" class="nav-link"><i class="fa-solid fa-bolt"></i> Jonli Natijalar</a></li>
                 <li><a href="#stars" class="nav-link"><i class="fa-solid fa-gem"></i> Top Yulduzlar</a></li>
                 <li><a href="#transfers" class="nav-link"><i class="fa-solid fa-repeat"></i> Transferlar</a></li>
@@ -79,11 +76,6 @@
                     <i class="fa-solid fa-moon icon-dark"></i>
                     <i class="fa-solid fa-sun icon-light"></i>
                 </label>
-
-                <!-- Mini-Game Quick Launch -->
-                <a href="#penalty-game" class="btn-game-launch">
-                    <i class="fa-solid fa-futbol"></i> Penalti Otish
-                </a>
 
                 <label for="navToggle" class="hamburger-btn" id="hamburgerBtn" title="Menyuni ochish">
                     <i class="fa-solid fa-bars-staggered"></i>
@@ -106,17 +98,15 @@
                 <span class="outline-text">CHEKSIZ EHTIROS.</span>
             </h1>
             <p class="hero-desc">
-                Eng tezkor <strong>jonli natijalar</strong>, interaktiv <strong>3D taktika maydoni</strong>, brauzer
-                ichidagi <strong>penalti otish o'yini</strong> va eksklyuziv transfer insaydlari bir platformada
-                jamlandi.
+                Eng tezkor <strong>jonli natijalar</strong>, interaktiv <strong>3D taktika maydoni</strong> va eksklyuziv transfer insaydlari bir platformada jamlandi.
             </p>
 
             <div class="hero-buttons">
-                <a href="#penalty-game" class="btn-primary-glow">
-                    <i class="fa-solid fa-gamepad"></i> Penalti O'ynash
-                </a>
-                <a href="#tactics" class="btn-secondary-glass">
+                <a href="#tactics" class="btn-primary-glow">
                     <i class="fa-solid fa-compass-drafting"></i> Taktik Maydon
+                </a>
+                <a href="#matches" class="btn-secondary-glass">
+                    <i class="fa-solid fa-bolt"></i> Jonli Natijalar
                 </a>
             </div>
 
@@ -199,156 +189,7 @@
         </div>
     </section>
 
-    <!-- SECTION 1: INTERACTIVE PENALTY SHOOTOUT GAME (PURE HTML/CSS) -->
-    <section id="penalty-game">
-        <div class="section-head">
-            <span class="section-tag"><i class="fa-solid fa-gamepad"></i> MINI-O'YIN</span>
-            <h2>INTERAKTIV <span>PENALTI SHOOTOUT</span></h2>
-            <p>Siz penalti nuqtasidasiz! Darvozaning istalgan burchagini tanlang, zarba kuchini hisoblang va
-                darvozabonni dog'da qoldiring!</p>
-        </div>
-
-        <div class="penalty-arena-card">
-            <div class="penalty-hud-header">
-                <div class="penalty-scoreboard">
-                    <div class="penalty-stat">
-                        <div class="label">GOLLAR</div>
-                        <div class="value glow-green" id="statGoals">14</div>
-                    </div>
-                    <div class="penalty-stat">
-                        <div class="label">SEYVLAR / XATO</div>
-                        <div class="value glow-red" id="statSaves">2</div>
-                    </div>
-                    <div class="penalty-stat">
-                        <div class="label">G'ALABALI SERIYA</div>
-                        <div class="value" id="statStreak">6</div>
-                    </div>
-                </div>
-
-                <div class="penalty-hud-actions">
-                    <label class="gk-toggle-label" title="Darvozabonni yoqish / o'chirish">
-                        <input type="checkbox" id="toggleKeeperCheckbox" checked class="gk-toggle-input" style="position: absolute; opacity: 0; pointer-events: none;">
-                        <span class="gk-toggle-btn">
-                            <i class="fa-solid fa-user-shield"></i> Darvozabon: <span class="gk-txt-on">BOR</span><span class="gk-txt-off">YO'Q (BO'SH DARVOZA)</span>
-                        </span>
-                    </label>
-                    <div style="font-family: var(--font-display); font-size: 0.8rem; color: var(--text-silver);">
-                        <i class="fa-solid fa-crosshairs" style="color: var(--neon-green);"></i> Darvoza burchaklariga bosing yoki <strong>ZARBA BERISH</strong> tugmasini tanlang!
-                    </div>
-                </div>
-            </div>
-
-            <!-- Pitch Viewport & Goal Scene (Pure CSS) -->
-            <div class="penalty-pitch-viewport">
-                <div class="stadium-goal-frame">
-                    <div class="goal-crossbar"></div>
-                    <div class="goal-post-left"></div>
-                    <div class="goal-post-right"></div>
-                    <div class="goal-net-mesh"></div>
-                    <div class="goalkeeper-figure" id="goalkeeperFigure">
-                        <svg viewBox="0 0 160 220" width="130" height="180" class="gk-svg-graphic" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <linearGradient id="gkJersey" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#00f0ff" />
-                                    <stop offset="100%" stop-color="#006699" />
-                                </linearGradient>
-                                <linearGradient id="gkGlove" x1="0%" y1="0%" x2="100%" y2="100%">
-                                    <stop offset="0%" stop-color="#00ff87" />
-                                    <stop offset="100%" stop-color="#00aa55" />
-                                </linearGradient>
-                                <radialGradient id="gkShadow" cx="50%" cy="50%" r="50%">
-                                    <stop offset="0%" stop-color="rgba(0,0,0,0.7)" />
-                                    <stop offset="100%" stop-color="transparent" />
-                                </radialGradient>
-                            </defs>
-
-                            <!-- Shadow on turf -->
-                            <ellipse cx="80" cy="208" rx="52" ry="10" fill="url(#gkShadow)" />
-
-                            <!-- Legs & Shorts -->
-                            <path d="M60 142 L48 192 L64 195 L72 150 Z" fill="#1e293b" />
-                            <path d="M100 142 L112 192 L96 195 L88 150 Z" fill="#1e293b" />
-                            <!-- Goalkeeper socks & boots -->
-                            <rect x="46" y="182" width="18" height="18" rx="4" fill="#00f0ff" />
-                            <rect x="96" y="182" width="18" height="18" rx="4" fill="#00f0ff" />
-                            <path d="M42 200 L66 200 L63 206 L39 206 Z" fill="#00ff87" />
-                            <path d="M94 200 L118 200 L121 206 L97 206 Z" fill="#00ff87" />
-
-                            <!-- Goalkeeper Body / Jersey -->
-                            <path d="M50 78 L110 78 L104 146 L56 146 Z" fill="url(#gkJersey)" />
-                            <text x="80" y="122" font-family="'Teko', sans-serif" font-size="28" font-weight="900" fill="#ffffff" text-anchor="middle">1</text>
-                            <text x="80" y="96" font-family="'Outfit', sans-serif" font-size="10" font-weight="800" fill="rgba(255,255,255,0.85)" text-anchor="middle" letter-spacing="1">COURTOIS</text>
-
-                            <!-- Head & Hair -->
-                            <circle cx="80" cy="54" r="16" fill="#f1c27d" />
-                            <path d="M65 50 Q80 34 95 50 Q92 40 80 38 Q68 40 65 50 Z" fill="#2d1d12" />
-
-                            <!-- Left Arm & Outstretched Glove -->
-                            <path d="M52 82 L26 98 L16 82" stroke="url(#gkJersey)" stroke-width="12" stroke-linecap="round" fill="none" />
-                            <ellipse cx="12" cy="76" rx="13" ry="15" fill="url(#gkGlove)" transform="rotate(-20 12 76)" />
-                            <circle cx="12" cy="76" r="5" fill="#ffffff" opacity="0.6" />
-
-                            <!-- Right Arm & Outstretched Glove -->
-                            <path d="M108 82 L134 98 L144 82" stroke="url(#gkJersey)" stroke-width="12" stroke-linecap="round" fill="none" />
-                            <ellipse cx="148" cy="76" rx="13" ry="15" fill="url(#gkGlove)" transform="rotate(20 148 76)" />
-                            <circle cx="148" cy="76" r="5" fill="#ffffff" opacity="0.6" />
-                        </svg>
-                        <div class="gk-status-badge">
-                            <span class="gk-live-dot"></span> Courtois #1
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Interactive Target Zones -->
-                <div class="penalty-targets-layer">
-                    <div class="penalty-target top-left" title="Chap yuqori 'To'qqizlik'">
-                        <i class="fa-solid fa-crosshairs"></i>
-                        <span>9-lik</span>
-                    </div>
-                    <div class="penalty-target top-center" title="Markaziy 'Panenka'">
-                        <i class="fa-solid fa-crosshairs"></i>
-                        <span>Panenka</span>
-                    </div>
-                    <div class="penalty-target top-right" title="O'ng yuqori 'To'qqizlik'">
-                        <i class="fa-solid fa-crosshairs"></i>
-                        <span>9-lik</span>
-                    </div>
-                </div>
-
-                <!-- Ball on Penalty Spot -->
-                <div class="penalty-ball-spot">
-                    <div class="penalty-spot-dot"></div>
-                    <i class="fa-solid fa-futbol penalty-ball-graphic"></i>
-                </div>
-
-                <div class="penalty-overlay-message goal-badge-static">GOOOOL! ⚽</div>
-            </div>
-
-            <!-- Controls & Power Meter -->
-            <div class="penalty-controls">
-                <div class="power-meter-wrap">
-                    <div class="power-meter-label">
-                        <span>ZARBA KUCHI (POWER METER - PULSING)</span>
-                        <span id="powerVal">88% MAX</span>
-                    </div>
-                    <div class="power-track">
-                        <div class="power-fill power-fill-animated" style="width: 88%;"></div>
-                    </div>
-                </div>
-
-                <div class="penalty-action-buttons">
-                    <a href="#penalty-game" class="btn-kick">
-                        <i class="fa-solid fa-futbol"></i> KUCHLI ZARBA!
-                    </a>
-                    <a href="#penalty-game" class="btn-reset-game">
-                        <i class="fa-solid fa-rotate-left"></i> Yangilash
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- SECTION 2: VIRTUAL TACTICAL PITCH & FORMATION ENGINE -->
+    <!-- SECTION 1: VIRTUAL TACTICAL PITCH & FORMATION ENGINE -->
     <section id="tactics">
         <div class="section-head">
             <span class="section-tag"><i class="fa-solid fa-futbol"></i> TAKTIKA LABORATORIYASI</span>
@@ -1095,9 +936,9 @@
                 <h4>Bo'limlar</h4>
                 <ul>
                     <li><a href="#hero">Bosh sahifa</a></li>
-                    <li><a href="#penalty-game">Penalti O'yini</a></li>
                     <li><a href="#tactics">Taktika Maydoni</a></li>
                     <li><a href="#matches">Jonli Efir</a></li>
+                    <li><a href="#stars">Top Yulduzlar</a></li>
                 </ul>
             </div>
 
