@@ -88,15 +88,22 @@
                     <i class="fa-solid fa-moon"></i>
                 </button>
 
-                <!-- Audio Atmosphere Button -->
-                <button class="audio-toggle-btn" id="audioToggleBtn" title="Stadion tovushi va atmosferasi">
-                    <div class="audio-bars">
-                        <div class="audio-bar"></div>
-                        <div class="audio-bar"></div>
-                        <div class="audio-bar"></div>
+                <!-- Audio Atmosphere Button & Volume Controller -->
+                <div class="audio-widget-wrapper" id="audioWidgetWrapper">
+                    <button class="audio-toggle-btn" id="audioToggleBtn" title="Stadion tovushi va atmosferasi">
+                        <div class="audio-bars">
+                            <div class="audio-bar"></div>
+                            <div class="audio-bar"></div>
+                            <div class="audio-bar"></div>
+                        </div>
+                        <span id="audioBtnText">Stadion: OFF</span>
+                    </button>
+                    <div class="audio-volume-control" id="audioVolumeControl" title="Maydon ovozi balandligini sozlash">
+                        <i class="fa-solid fa-volume-high" id="volumeIcon"></i>
+                        <input type="range" class="audio-volume-slider" id="audioVolumeSlider" min="0" max="100" value="85" aria-label="Maydon ovozi balandligi">
+                        <span class="volume-value" id="volumeValue">85%</span>
                     </div>
-                    <span id="audioBtnText">Stadion: OFF</span>
-                </button>
+                </div>
 
                 <!-- Mini-Game Quick Launch -->
                 <a href="#penalty-game" class="btn-game-launch">

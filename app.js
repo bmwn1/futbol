@@ -65,27 +65,81 @@ function initNavScroll() {
    ========================================================================== */
 let audioCtx = null;
 let isAudioActive = false;
+let masterGainNode = null;
 let crowdGainNode = null;
 let crowdSourceNode = null;
+let crowdLowFilter = null;
+let crowdBandFilter = null;
+let crowdLfoNode = null;
+let crowdLfoGain = null;
+let currentVolume = 0.85; // 85% default volume
+
+async function ensureAudioContext() {
+    if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContextClass();
+        masterGainNode = audioCtx.createGain();
+        masterGainNode.gain.setValueAtTime(currentVolume, audioCtx.currentTime);
+        masterGainNode.connect(audioCtx.destination);
+    }
+    if (audioCtx.state === 'suspended') {
+        try {
+            await audioCtx.resume();
+        } catch (e) {
+            console.warn('AudioContext resume notice:', e);
+        }
+    }
+    return audioCtx;
+}
+
+function setMasterVolume(val) {
+    currentVolume = Math.max(0, Math.min(1, val));
+    if (masterGainNode && audioCtx) {
+        masterGainNode.gain.cancelScheduledValues(audioCtx.currentTime);
+        masterGainNode.gain.linearRampToValueAtTime(currentVolume, audioCtx.currentTime + 0.05);
+    }
+    const volSlider = document.getElementById('audioVolumeSlider');
+    const volVal = document.getElementById('volumeValue');
+    const volIcon = document.getElementById('volumeIcon');
+
+    const percent = Math.round(currentVolume * 100);
+    if (volSlider && parseInt(volSlider.value) !== percent) {
+        volSlider.value = percent;
+    }
+    if (volVal) {
+        volVal.textContent = `${percent}%`;
+    }
+    if (volIcon) {
+        if (currentVolume === 0) {
+            volIcon.className = 'fa-solid fa-volume-xmark';
+        } else if (currentVolume < 0.4) {
+            volIcon.className = 'fa-solid fa-volume-low';
+        } else {
+            volIcon.className = 'fa-solid fa-volume-high';
+        }
+    }
+}
 
 function initAudioEngine() {
     const audioBtn = document.getElementById('audioToggleBtn');
     const audioText = document.getElementById('audioBtnText');
+    const volSlider = document.getElementById('audioVolumeSlider');
 
     if (!audioBtn) return;
 
-    audioBtn.addEventListener('click', () => {
-        if (!audioCtx) {
-            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-            audioCtx = new AudioContextClass();
-        }
+    if (volSlider) {
+        volSlider.addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value) / 100;
+            setMasterVolume(val);
+        });
+    }
+
+    audioBtn.addEventListener('click', async () => {
+        await ensureAudioContext();
 
         isAudioActive = !isAudioActive;
 
         if (isAudioActive) {
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
             audioBtn.classList.add('audio-playing');
             if (audioText) audioText.innerHTML = '<i class="fa-solid fa-volume-high"></i> Stadion: ON';
             startSynthesizedCrowd();
@@ -98,7 +152,7 @@ function initAudioEngine() {
     });
 }
 
-// Generate continuous cheering stadium drone using filtered pink noise
+// Generate continuous cheering stadium drone using dual-filtered pink noise + atmospheric crowd roar
 function startSynthesizedCrowd() {
     if (!audioCtx || !isAudioActive) return;
 
@@ -110,38 +164,73 @@ function startSynthesizedCrowd() {
             audioCtx.resume();
         }
 
-        const bufferSize = audioCtx.sampleRate * 2.5;
-        const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-        const output = noiseBuffer.getChannelData(0);
+        const bufferSize = audioCtx.sampleRate * 3;
+        const noiseBuffer = audioCtx.createBuffer(2, bufferSize, audioCtx.sampleRate);
+        const leftChannel = noiseBuffer.getChannelData(0);
+        const rightChannel = noiseBuffer.getChannelData(1);
+
         let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+        let rb0 = 0, rb1 = 0, rb2 = 0, rb3 = 0, rb4 = 0, rb5 = 0, rb6 = 0;
 
         for (let i = 0; i < bufferSize; i++) {
-            const white = Math.random() * 2 - 1;
-            b0 = 0.99886 * b0 + white * 0.0555179;
-            b1 = 0.99332 * b1 + white * 0.0750759;
-            b2 = 0.96900 * b2 + white * 0.1538520;
-            b3 = 0.86650 * b3 + white * 0.3104856;
-            b4 = 0.55000 * b4 + white * 0.5329522;
-            b5 = -0.7616 * b5 - white * 0.0168980;
-            output[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362) * 0.035;
-            b6 = white * 0.115926;
+            const whiteL = Math.random() * 2 - 1;
+            b0 = 0.99886 * b0 + whiteL * 0.0555179;
+            b1 = 0.99332 * b1 + whiteL * 0.0750759;
+            b2 = 0.96900 * b2 + whiteL * 0.1538520;
+            b3 = 0.86650 * b3 + whiteL * 0.3104856;
+            b4 = 0.55000 * b4 + whiteL * 0.5329522;
+            b5 = -0.7616 * b5 - whiteL * 0.0168980;
+            leftChannel[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + whiteL * 0.5362) * 0.16;
+            b6 = whiteL * 0.115926;
+
+            const whiteR = Math.random() * 2 - 1;
+            rb0 = 0.99886 * rb0 + whiteR * 0.0555179;
+            rb1 = 0.99332 * rb1 + whiteR * 0.0750759;
+            rb2 = 0.96900 * rb2 + whiteR * 0.1538520;
+            rb3 = 0.86650 * rb3 + whiteR * 0.3104856;
+            rb4 = 0.55000 * rb4 + whiteR * 0.5329522;
+            rb5 = -0.7616 * rb5 - whiteR * 0.0168980;
+            rightChannel[i] = (rb0 + rb1 + rb2 + rb3 + rb4 + rb5 + rb6 + whiteR * 0.5362) * 0.16;
+            rb6 = whiteR * 0.115926;
         }
 
         crowdSourceNode = audioCtx.createBufferSource();
         crowdSourceNode.buffer = noiseBuffer;
         crowdSourceNode.loop = true;
 
-        const filter = audioCtx.createBiquadFilter();
-        filter.type = 'bandpass';
-        filter.frequency.setValueAtTime(450, audioCtx.currentTime);
-        filter.Q.setValueAtTime(2.2, audioCtx.currentTime);
+        // Low rumble filter: deep arena roar
+        crowdLowFilter = audioCtx.createBiquadFilter();
+        crowdLowFilter.type = 'lowpass';
+        crowdLowFilter.frequency.setValueAtTime(650, audioCtx.currentTime);
 
+        // Vocal presence bandpass: stadium chants and claps
+        crowdBandFilter = audioCtx.createBiquadFilter();
+        crowdBandFilter.type = 'peaking';
+        crowdBandFilter.frequency.setValueAtTime(420, audioCtx.currentTime);
+        crowdBandFilter.gain.setValueAtTime(6.0, audioCtx.currentTime);
+        crowdBandFilter.Q.setValueAtTime(1.4, audioCtx.currentTime);
+
+        // Crowd Gain Node: High and energetic stadium volume (0.65 vs previous 0.12)
         crowdGainNode = audioCtx.createGain();
-        crowdGainNode.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        crowdGainNode.gain.setValueAtTime(0.65, audioCtx.currentTime);
 
-        crowdSourceNode.connect(filter);
-        filter.connect(crowdGainNode);
-        crowdGainNode.connect(audioCtx.destination);
+        // Slow LFO wave to simulate natural stadium swells and cheering waves
+        crowdLfoNode = audioCtx.createOscillator();
+        crowdLfoGain = audioCtx.createGain();
+        crowdLfoNode.frequency.setValueAtTime(0.22, audioCtx.currentTime);
+        crowdLfoGain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+        crowdLfoNode.connect(crowdLfoGain);
+        crowdLfoGain.connect(crowdGainNode.gain);
+        crowdLfoNode.start();
+
+        // Connect graph
+        crowdSourceNode.connect(crowdLowFilter);
+        crowdLowFilter.connect(crowdBandFilter);
+        crowdBandFilter.connect(crowdGainNode);
+
+        const dest = masterGainNode || audioCtx.destination;
+        crowdGainNode.connect(dest);
+
         crowdSourceNode.start(0);
     } catch (e) {
         console.warn('Audio synthesis notice:', e);
@@ -150,6 +239,17 @@ function startSynthesizedCrowd() {
 
 // Complete and immediate silence
 function stopSynthesizedCrowd() {
+    if (crowdLfoNode) {
+        try {
+            crowdLfoNode.stop();
+            crowdLfoNode.disconnect();
+        } catch (e) { }
+        crowdLfoNode = null;
+    }
+    if (crowdLfoGain) {
+        try { crowdLfoGain.disconnect(); } catch (e) { }
+        crowdLfoGain = null;
+    }
     if (crowdGainNode && audioCtx) {
         try {
             crowdGainNode.gain.cancelScheduledValues(0);
@@ -159,7 +259,14 @@ function stopSynthesizedCrowd() {
         } catch (e) { }
         crowdGainNode = null;
     }
-
+    if (crowdLowFilter) {
+        try { crowdLowFilter.disconnect(); } catch (e) { }
+        crowdLowFilter = null;
+    }
+    if (crowdBandFilter) {
+        try { crowdBandFilter.disconnect(); } catch (e) { }
+        crowdBandFilter = null;
+    }
     if (crowdSourceNode) {
         try {
             crowdSourceNode.stop(0);
@@ -175,9 +282,12 @@ function stopSynthesizedCrowd() {
     }
 }
 
-// Referee Whistle Sound
+// Referee Whistle Sound (Crisp, High, Loud)
 function playWhistleSound() {
-    if (!isAudioActive || !audioCtx || audioCtx.state !== 'running') return;
+    if (!isAudioActive || !audioCtx) return;
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
     try {
         const osc1 = audioCtx.createOscillator();
         const osc2 = audioCtx.createOscillator();
@@ -185,69 +295,125 @@ function playWhistleSound() {
 
         osc1.type = 'sine';
         osc2.type = 'sine';
-        osc1.frequency.setValueAtTime(2700, audioCtx.currentTime);
-        osc2.frequency.setValueAtTime(2950, audioCtx.currentTime);
+        osc1.frequency.setValueAtTime(2650, audioCtx.currentTime);
+        osc2.frequency.setValueAtTime(2920, audioCtx.currentTime);
 
         const vibrato = audioCtx.createOscillator();
         const vibratoGain = audioCtx.createGain();
-        vibrato.frequency.setValueAtTime(35, audioCtx.currentTime);
-        vibratoGain.gain.setValueAtTime(150, audioCtx.currentTime);
+        vibrato.frequency.setValueAtTime(36, audioCtx.currentTime);
+        vibratoGain.gain.setValueAtTime(140, audioCtx.currentTime);
         vibrato.connect(osc1.frequency);
         vibrato.connect(osc2.frequency);
         vibrato.start();
 
-        gain.gain.setValueAtTime(0.18, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.32);
+        // Increased gain: 0.52 (was 0.18)
+        gain.gain.setValueAtTime(0.52, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.35);
 
         osc1.connect(gain);
         osc2.connect(gain);
-        gain.connect(audioCtx.destination);
+
+        const dest = masterGainNode || audioCtx.destination;
+        gain.connect(dest);
 
         osc1.start();
         osc2.start();
-        osc1.stop(audioCtx.currentTime + 0.32);
-        osc2.stop(audioCtx.currentTime + 0.32);
-        vibrato.stop(audioCtx.currentTime + 0.32);
+        osc1.stop(audioCtx.currentTime + 0.35);
+        osc2.stop(audioCtx.currentTime + 0.35);
+        vibrato.stop(audioCtx.currentTime + 0.35);
     } catch (e) { }
 }
 
-// Ball Kick Sound
+// Ball Kick Sound (Punchy Sub-bass + Strike Click)
 function playKickSound() {
-    if (!isAudioActive || !audioCtx || audioCtx.state !== 'running') return;
+    if (!isAudioActive || !audioCtx) return;
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
     try {
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(120, audioCtx.currentTime);
-        osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.15);
+        osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(36, audioCtx.currentTime + 0.16);
 
-        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+        // Increased gain: 0.72 (was 0.30)
+        gain.gain.setValueAtTime(0.72, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.16);
+
+        // Leather strike transient
+        const clickOsc = audioCtx.createOscillator();
+        const clickGain = audioCtx.createGain();
+        clickOsc.type = 'triangle';
+        clickOsc.frequency.setValueAtTime(450, audioCtx.currentTime);
+        clickOsc.frequency.exponentialRampToValueAtTime(80, audioCtx.currentTime + 0.04);
+        clickGain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+        clickGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.04);
 
         osc.connect(gain);
-        gain.connect(audioCtx.destination);
+        clickOsc.connect(clickGain);
+
+        const dest = masterGainNode || audioCtx.destination;
+        gain.connect(dest);
+        clickGain.connect(dest);
+
         osc.start();
-        osc.stop(audioCtx.currentTime + 0.15);
+        clickOsc.start();
+        osc.stop(audioCtx.currentTime + 0.16);
+        clickOsc.stop(audioCtx.currentTime + 0.04);
     } catch (e) { }
 }
 
-// Goal Roar Fanfare
+// Goal Roar Fanfare & Arena Celebration
 function playGoalSound() {
-    if (!isAudioActive || !audioCtx || audioCtx.state !== 'running') return;
+    if (!isAudioActive || !audioCtx) return;
+    if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+    }
     playWhistleSound();
     try {
-        [523.25, 659.25, 783.99, 1046.50].forEach((freq, index) => {
+        // Glorious stadium triumph chords
+        [523.25, 659.25, 783.99, 1046.50, 1318.51].forEach((freq, index) => {
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.type = 'triangle';
-            osc.frequency.setValueAtTime(freq, audioCtx.currentTime + index * 0.08);
-            gain.gain.setValueAtTime(0.2, audioCtx.currentTime + index * 0.08);
-            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + index * 0.08 + 0.5);
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime + index * 0.07);
+            // Increased gain: 0.48 (was 0.20)
+            gain.gain.setValueAtTime(0.48, audioCtx.currentTime + index * 0.07);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + index * 0.07 + 0.65);
+
+            const dest = masterGainNode || audioCtx.destination;
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
-            osc.start(audioCtx.currentTime + index * 0.08);
-            osc.stop(audioCtx.currentTime + index * 0.08 + 0.5);
+            gain.connect(dest);
+
+            osc.start(audioCtx.currentTime + index * 0.07);
+            osc.stop(audioCtx.currentTime + index * 0.07 + 0.65);
         });
+
+        // Instant crowd roar burst for realistic celebration!
+        const cheerBuffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 1.2, audioCtx.sampleRate);
+        const cheerData = cheerBuffer.getChannelData(0);
+        for (let i = 0; i < cheerData.length; i++) {
+            cheerData[i] = (Math.random() * 2 - 1) * 0.35;
+        }
+        const cheerSource = audioCtx.createBufferSource();
+        cheerSource.buffer = cheerBuffer;
+
+        const cheerFilter = audioCtx.createBiquadFilter();
+        cheerFilter.type = 'bandpass';
+        cheerFilter.frequency.setValueAtTime(700, audioCtx.currentTime);
+        cheerFilter.Q.setValueAtTime(1.0, audioCtx.currentTime);
+
+        const cheerGain = audioCtx.createGain();
+        cheerGain.gain.setValueAtTime(0.65, audioCtx.currentTime);
+        cheerGain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.2);
+
+        cheerSource.connect(cheerFilter);
+        cheerFilter.connect(cheerGain);
+        cheerGain.connect(masterGainNode || audioCtx.destination);
+
+        cheerSource.start(audioCtx.currentTime);
+        cheerSource.stop(audioCtx.currentTime + 1.2);
     } catch (e) { }
 }
 
@@ -775,6 +941,7 @@ function initTacticsBoard() {
             btn.classList.add('active');
             currentFormation = btn.dataset.formation;
             renderPlayers();
+            playWhistleSound();
         });
     });
 
